@@ -33,8 +33,7 @@ export class EventsGateway
 
   handleConnection(client: Socket) {
     this.logger.log(`User connected: ${client.id}`);
-    client.on('authenticate', async (data) => {
-      const { email, password } = JSON.parse(data);
+    client.on('authenticate', async ({ email, password }) => {
       const user = await this.userService.login(email, password);
       if (user) {
         connections.set(client, {

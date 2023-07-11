@@ -1,15 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User, UserDocument, Friendship, FriendshipDocument } from '../schemas';
+import { User, UserDocument } from '../schemas';
 
 @Injectable()
 export class UserRepository {
   constructor(
     @InjectModel(User.name)
     private readonly UserModel: Model<UserDocument>,
-    @InjectModel(Friendship.name)
-    private readonly FriendshipModel: Model<FriendshipDocument>,
   ) {}
 
   registerDB(query) {
@@ -20,7 +18,10 @@ export class UserRepository {
     return this.UserModel.findOne(query).populate('friends');
   }
 
-  addFriend(query) {
-    return this.FriendshipModel.create(query);
+  async addFriend(query) {
+    const user = await this.UserModel.findById({ _id: query.user });
+    user.friends.push(query.friend);
+    await user.save();
+    return user;
   }
 }

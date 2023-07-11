@@ -3,7 +3,7 @@ export interface IUserInterface {
 
   register(name: string, email: string, password: string): Promise<any>;
 
-  addFriend(userId: string, friendId: string): Promise<any>;
+  addFriend(user: string, friend: string): Promise<any>;
 }
 
 export const IUserInterface = Symbol('IUserInterface');

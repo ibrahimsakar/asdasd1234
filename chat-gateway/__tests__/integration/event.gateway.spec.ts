@@ -20,8 +20,8 @@ beforeAll(async () => {
   eventTestModule.get<EventsGateway>(EventsGateway);
 
   app = eventTestModule.createNestApplication();
-  await app.init();
   app.useWebSocketAdapter(new SocketIoAdapter(app.getHttpServer()));
+  await app.init();
 });
 
 afterAll(async () => {
@@ -41,20 +41,18 @@ describe('event tests', () => {
       done();
     });
 
-    // Socket login
     socket.emit('authenticate', {
       email: 'ibrahim@ibrahim.com',
       password: '123456',
     });
   });
 
-  it('Geçersiz kimlik bilgileriyle giriş yapıldığında "unauthorized" olayı alınmalı', (done) => {
+  it('authenticationFailed test', (done) => {
     const socket = io(getSocketDsn());
     socket.on('authenticationFailed', () => {
       done();
     });
 
-    // Socket üzerinden hatalı login işlemi yapma
     socket.emit('authenticate', {
       email: 'ibrahim@ibrahim.com',
       password: '111111',

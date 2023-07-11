@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
-import { Friendship } from './friendship.schema';
 
 @Schema({
   timestamps: true,
@@ -30,8 +29,8 @@ export class User {
   })
   password: string;
 
-  @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: 'Friendship' }])
-  friends: Friendship[];
+  @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }])
+  friends: [ mongoose.Schema.Types.ObjectId ];
 }
 
 export type UserDocument = User & mongoose.Document;

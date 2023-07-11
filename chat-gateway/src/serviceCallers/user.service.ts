@@ -22,14 +22,14 @@ export default class UserServiceCaller implements IUserInterface {
     });
   }
 
-  async addFriend(userId: string, friendId: string): Promise<any> {
+  async addFriend(user: string, friend: string): Promise<any> {
     return this.serviceCaller.request(
       SERVICES.USER,
       'POST',
-      'users/add-friend',
+      'users/friend',
       {
-        userId,
-        friendId,
+        user,
+        friend,
       },
     );
   }
