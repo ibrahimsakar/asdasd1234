@@ -1,5 +1,5 @@
 export default () => ({
-  name: 'chat-gateway',
+  name: 'chat-service',
   env: process.env.NODE_ENV || 'dev',
   host: process.env.HOST || '0.0.0.0',
   port: process.env.PORT || 8081,
