@@ -8,8 +8,8 @@ services:
       - 8080:8080
     environment:
       - PUB_SUB_REDIS_URL=redis://redis:6379
-      - CHAT_SERVICE_URL=http://localhost:8081/
-      - USER_SERVICE_URL=http://localhost:8082/
+      - CHAT_SERVICE_URL=http://asdasd1234-chat-service-1:8081/
+      - USER_SERVICE_URL=http://asdasd1234-user-service-1:8082/
     networks:
       - my-network-name
   chat-service:
