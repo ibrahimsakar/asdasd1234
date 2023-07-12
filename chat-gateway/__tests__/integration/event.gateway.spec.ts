@@ -1,11 +1,9 @@
-import { io, Socket } from 'socket.io-client';
-// import { Server, Socket } from 'socket.io';
+import { Socket } from 'socket.io-client';
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import { createWebSocketServer } from '../helpers/webscoket.helper';
 import EventsModule from '../../src/events/events.module';
 import { EventsGateway } from '../../src/events/events.gateway';
-// import { SocketIoAdapter } from '../../src/adapters/socketio.adapter';
 import { IUserInterface, IChatInterface } from '../../src/interfaces';
 import UserMockServiceCaller from '../helpers/mocks/serviceCallers/user.mock.service';
 import ChatMockServiceCaller from '../helpers/mocks/serviceCallers/chat.mock.service';
@@ -27,7 +25,6 @@ beforeAll(async () => {
 
   app = eventTestModule.createNestApplication();
   socket = createWebSocketServer(app);
-  // app.useWebSocketAdapter(new SocketIoAdapter(app.getHttpServer()));
   await app.init();
 });
 
