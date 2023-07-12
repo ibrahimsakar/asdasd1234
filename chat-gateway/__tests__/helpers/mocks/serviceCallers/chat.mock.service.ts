@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { ObjectId } from 'mongodb';
 import { IChatInterface } from '../../../../src/interfaces/chat.interface';
 import { messages } from '../data/messages';
 
@@ -14,9 +15,13 @@ export default class ChatMockServiceCaller implements IChatInterface {
     sender: string,
     friend: string,
     content: string,
-    status: number,
   ): Promise<any> {
-    return Promise.resolve();
+    return Promise.resolve({
+      _id: new ObjectId(),
+      sender,
+      friend,
+      content,
+    });
   }
 
   async update(messageId: string, status: number): Promise<any> {

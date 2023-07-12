@@ -3,7 +3,6 @@ export interface IChatInterface {
     sender: string,
     friend: string,
     content: string,
-    status: number,
   ): Promise<any>;
 
   update(messageId: string, status: number): Promise<any>;

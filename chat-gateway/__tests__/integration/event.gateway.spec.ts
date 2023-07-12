@@ -6,8 +6,9 @@ import { createWebSocketServer } from '../helpers/webscoket.helper';
 import EventsModule from '../../src/events/events.module';
 import { EventsGateway } from '../../src/events/events.gateway';
 // import { SocketIoAdapter } from '../../src/adapters/socketio.adapter';
-import { IUserInterface } from '../../src/interfaces';
+import { IUserInterface, IChatInterface } from '../../src/interfaces';
 import UserMockServiceCaller from '../helpers/mocks/serviceCallers/user.mock.service';
+import ChatMockServiceCaller from '../helpers/mocks/serviceCallers/chat.mock.service';
 
 let app: INestApplication;
 let socket: Socket;
@@ -18,6 +19,8 @@ beforeAll(async () => {
   })
     .overrideProvider(IUserInterface)
     .useClass(UserMockServiceCaller)
+    .overrideProvider(IChatInterface)
+    .useClass(ChatMockServiceCaller)
     .compile();
 
   eventTestModule.get<EventsGateway>(EventsGateway);
@@ -54,6 +57,40 @@ describe('event tests', () => {
     socket.emit('authenticate', {
       email: 'ibrahim@ibrahim.com',
       password: '111111',
+    });
+  });
+
+  it('send message offline friend successfully', (done) => {
+    socket.on('messageSent', () => {
+      done();
+    });
+    socket.emit('authenticate', {
+      email: 'ibrahim@ibrahim.com',
+      password: '123456',
+    });
+    // socket.emit('authenticate', {
+    //   email: 'ozan@ozan.com',
+    //   password: '123456',
+    // });
+    socket.emit('message', {
+      message: 'Send message'
+    });
+  });
+
+  it('send message online friend successfully', (done) => {
+    socket.on('messageDelivered', () => {
+      done();
+    });
+    socket.emit('authenticate', {
+      email: 'ibrahim@ibrahim.com',
+      password: '123456',
+    });
+    socket.emit('authenticate', {
+      email: 'ozan@ozan.com',
+      password: '123456',
+    });
+    socket.emit('message', {
+      message: 'Send message'
     });
   });
 });

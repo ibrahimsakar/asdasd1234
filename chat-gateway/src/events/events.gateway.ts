@@ -42,19 +42,18 @@ export class EventsGateway
           friends: user.friends,
           pendingMessages: user.pendingMessages,
         });
-        this.socketService.sendOnlineEventToFriends(client, connections);
-        return;
+        await this.socketService.sendOnlineEventToFriends(client, connections);
+      } else {
+        client.emit('authenticationFailed');
+        client.disconnect();
       }
-      client.emit('authenticationFailed');
-      client.disconnect();
     });
 
-    client.on('message', (message) => {
-      const data = JSON.parse(message);
-      this.socketService.forwardMessageToFriends(
+    client.on('message', async ({ message }) => {
+      await this.socketService.forwardMessageToFriends(
         client,
         connections,
-        data.message,
+        message,
       );
     });
   }

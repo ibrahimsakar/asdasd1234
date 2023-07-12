@@ -31,7 +31,7 @@ services:
     ports:
       - 8082:8082
     environment:
-      - MONGODB_URL=mongodb://mongodb:27017/user
+      - MONGODB_URL=mongodb://mongodb:27017/chat
     depends_on:
       - mongodb
     networks:

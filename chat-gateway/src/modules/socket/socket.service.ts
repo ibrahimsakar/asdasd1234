@@ -18,13 +18,12 @@ export class SocketService {
   ) {
     const { friends } = this.getAuthenticatedUserData(client, connections);
     const onlineEvent = {
-      type: 'online',
       userId: this.getUserId(client, connections),
     };
     client.emit('authenticated');
     for (const friend of friends) {
       if (connections.has(friend)) {
-        friend.emit('message', JSON.stringify(onlineEvent));
+        friend.emit('online', onlineEvent);
       }
     }
   }
@@ -35,13 +34,12 @@ export class SocketService {
     connections: Map<Socket, IConnection>,
   ) {
     const offlineEvent = {
-      type: 'offline',
       userId: this.getUserId(client, connections),
     };
 
     for (const friend of friends) {
       if (connections.has(friend)) {
-        friend.emit('message', JSON.stringify(offlineEvent));
+        friend.emit('offline', JSON.stringify(offlineEvent));
       }
     }
   }
@@ -67,15 +65,15 @@ export class SocketService {
     const senderUserId = this.getUserId(client, connections);
 
     for (const friend of friends) {
+      const friendData = connections.get(friend);
+      const data = await this.chatServiceCaller.send(
+        senderUserId,
+        this.getUserId(friend, connections),
+        message,
+      );
+      client.emit('messageSent');
       if (connections.has(friend)) {
-        const friendData = connections.get(friend);
         if (friendData.authenticated) {
-          const data = await this.chatServiceCaller.send(
-            senderUserId,
-            this.getUserId(friend, connections),
-            message,
-            MESSAGE_STATUSES.SENT,
-          );
           friend.emit(
             'message',
             JSON.stringify({
@@ -86,6 +84,11 @@ export class SocketService {
               status: MESSAGE_STATUSES.SENT,
             }),
           );
+          await this.chatServiceCaller.update(
+            data._id,
+            MESSAGE_STATUSES.DELIVERED,
+          );
+          client.emit('messageDelivered');
         }
       }
     }
