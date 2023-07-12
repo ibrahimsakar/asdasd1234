@@ -34,7 +34,7 @@ export class EventsGateway
   handleConnection(client: Socket) {
     this.logger.log(`User connected: ${client.id}`);
     client.on('authenticate', async ({ email, password }) => {
-      const user = await this.userService.login(email, password);
+      const user = await this.userService.login(email, password).catch(() => {});
       if (user) {
         connections.set(client, {
           authenticated: true,

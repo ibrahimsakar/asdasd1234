@@ -7,7 +7,7 @@ services:
     ports:
       - 8080:8080
     environment:
-      - PUB_SUB_REDIS_URL=redis://redis:6379
+      - PUB_SUB_REDIS_URL=redis://asdasd1234-redis-1:6379
       - CHAT_SERVICE_URL=http://asdasd1234-chat-service-1:8081/
       - USER_SERVICE_URL=http://asdasd1234-user-service-1:8082/
     networks:
@@ -41,7 +41,6 @@ services:
     ports:
       - '6379:6379'
     environment:
-      # ALLOW_EMPTY_PASSWORD is recommended only for development.
       - ALLOW_EMPTY_PASSWORD=yes
     volumes: 
       - cache:/data

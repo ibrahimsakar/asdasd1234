@@ -99,6 +99,10 @@ export class SocketService {
   }
 
   getUserId(client: Socket, connections: Map<Socket, IConnection>) {
-    return this.getAuthenticatedUserData(client, connections).userId;
+    const authenticatedUser = this.getAuthenticatedUserData(client, connections);
+    if (authenticatedUser && authenticatedUser.userId) {
+      return authenticatedUser.userId;
+    }
+    return;
   }
 }

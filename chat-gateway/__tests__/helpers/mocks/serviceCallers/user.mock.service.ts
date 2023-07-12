@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { IUserInterface } from '../../../../src/interfaces/user.interface';
+import { IUserInterface } from "../../../../src/interfaces";
+import { users } from '../data/users';
 
 @Injectable()
 export default class UserMockServiceCaller implements IUserInterface {
@@ -8,10 +9,11 @@ export default class UserMockServiceCaller implements IUserInterface {
   }
 
   async login(email: string, password: string): Promise<any> {
-    if (password === '111111') {
-      return Promise.reject();
+    const user = users.find((user) => user.email === email && user.password === password);
+    if (user) {
+      return Promise.resolve(user);
     }
-    return Promise.resolve();
+    return Promise.reject();
   }
 
   async addFriend(user: string, friend: string): Promise<any> {
