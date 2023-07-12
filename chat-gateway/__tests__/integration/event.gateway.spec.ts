@@ -68,10 +68,6 @@ describe('event tests', () => {
       email: 'ibrahim@ibrahim.com',
       password: '123456',
     });
-    // socket.emit('authenticate', {
-    //   email: 'ozan@ozan.com',
-    //   password: '123456',
-    // });
     socket.emit('message', {
       message: 'Send message'
     });
